@@ -3,157 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VoiceAI Pro</title>
+    <title>VoiceAI Pro - Gemini Powered</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #0f172a; color: #f8fafc; padding: 16px; display: flex; flex-direction: column; gap: 16px; min-height: 100vh; }
+        
+        .app-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid #334155; }
+        .app-title { font-size: 1.2rem; font-weight: 700; color: #38bdf8; display: flex; align-items: center; gap: 8px; }
+        
+        .card { background: rgba(30, 41, 59, 0.8); border: 1px solid #334155; border-radius: 16px; padding: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); }
+        
+        .key-input { width: 100%; background: #090d16; border: 1px solid #38bdf8; border-radius: 10px; padding: 10px; color: #f1f5f9; font-size: 0.85rem; margin-top: 6px; outline: none; }
+        
+        .record-section { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 20px 10px; }
+        
+        .mic-btn { width: 76px; height: 76px; border-radius: 50%; background: #0284c7; border: none; color: white; font-size: 30px; cursor: pointer; box-shadow: 0 0 20px rgba(2, 132, 199, 0.5); display: flex; align-items: center; justify-content: center; }
+        .mic-btn.recording { background: #ef4444; box-shadow: 0 0 25px rgba(239, 68, 68, 0.8); animation: pulse 1.2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
 
-        body {
-            background-color: #0f172a;
-            color: #f8fafc;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            min-height: 100vh;
-        }
-
-        .app-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #334155;
-        }
-
-        .app-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #38bdf8;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .card {
-            background: rgba(30, 41, 59, 0.8);
-            border: 1px solid #334155;
-            border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-        }
-
-        .record-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            gap: 14px;
-            padding: 20px 10px;
-        }
-
-        .mic-btn {
-            width: 76px;
-            height: 76px;
-            border-radius: 50%;
-            background: #0284c7;
-            border: none;
-            color: white;
-            font-size: 30px;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(2, 132, 199, 0.5);
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .mic-btn.recording {
-            background: #ef4444;
-            box-shadow: 0 0 25px rgba(239, 68, 68, 0.8);
-            animation: pulse 1.2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-            100% { transform: scale(1); }
-        }
-
-        .btn-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .btn {
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .btn:disabled {
-            opacity: 0.35;
-            cursor: not-allowed;
-        }
-
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .btn { padding: 12px; border-radius: 10px; border: none; font-weight: 600; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn:disabled { opacity: 0.35; cursor: not-allowed; }
         .btn-primary { background: #38bdf8; color: #0f172a; }
         .btn-purple { background: #a855f7; color: white; }
         .btn-green { background: #22c55e; color: white; }
 
-        .section-title {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #cbd5e1;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        textarea {
-            width: 100%;
-            height: 130px;
-            background: #090d16;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 12px;
-            color: #f1f5f9;
-            font-size: 0.9rem;
-            resize: none;
-            outline: none;
-        }
-
-        textarea:focus {
-            border-color: #38bdf8;
-        }
-
-        .history-item {
-            background: #090d16;
-            border: 1px solid #1e293b;
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            font-size: 0.85rem;
-        }
-
-        .history-date {
-            font-size: 0.75rem;
-            color: #38bdf8;
-            margin-bottom: 4px;
-        }
+        .section-title { font-size: 0.9rem; font-weight: 600; color: #cbd5e1; margin-bottom: 8px; display: flex; justify-content: space-between; }
+        textarea { width: 100%; height: 130px; background: #090d16; border: 1px solid #334155; border-radius: 12px; padding: 12px; color: #f1f5f9; font-size: 0.9rem; resize: none; outline: none; }
+        
+        .history-item { background: #090d16; border: 1px solid #1e293b; padding: 10px; border-radius: 10px; margin-bottom: 8px; font-size: 0.85rem; }
+        .history-date { font-size: 0.75rem; color: #38bdf8; margin-bottom: 4px; }
     </style>
 </head>
 <body>
@@ -162,15 +41,23 @@
         <div class="app-title">
             <span>🎙️</span> VoiceAI Pro
         </div>
-        <span style="font-size: 0.75rem; color: #64748b;">Smart Voice Note</span>
+        <span style="font-size: 0.75rem; color: #64748b;">Gemini AI Integrated</span>
+    </div>
+
+    <!-- API Key Input -->
+    <div class="card">
+        <div class="section-title">🔑 Google Gemini API Key</div>
+        <input type="password" id="geminiKey" class="key-input" placeholder="Masukkan Kunci API (misal: AQ.Ab8RN6...)">
+      AQ.Ab8RN6Lp8lmwsDU9iW3ke
+      eRUvzfK5EEI8G_VKwotD9vY4Vh0hg
     </div>
 
     <!-- Perekam Suara -->
     <div class="card record-section">
-        <button id="btnRecord" class="mic-btn">🎙️</button>
+        <button id="btnRecord" class="mic-btn">🎙️️</button>
         <div>
-            <h3 id="statusTitle" style="font-size: 1.05rem; font-weight: 600;">Ketuk Mikrofon</h3>
-            <p id="statusDesc" style="font-size: 0.85rem; color: #94a3b8;">Bicara dan suara akan langsung diubah jadi teks di bawah.</p>
+            <h3 id="statusTitle" style="font-size: 1.05rem; font-weight: 600;">Ketuk Untuk Merekam</h3>
+            <p id="statusDesc" style="font-size: 0.85rem; color: #94a3b8;">Bicara, lalu tekan lagi untuk mengonversi ke teks via AI Gemini.</p>
         </div>
     </div>
 
@@ -180,12 +67,12 @@
             <span>📝 Transkripsi Suara</span>
             <span id="charCount" style="color: #64748b;">0 Karakter</span>
         </div>
-        <textarea id="rawText" placeholder="Suara Anda akan langsung muncul jadi teks di sini saat berbicara..."></textarea>
+        <textarea id="rawText" placeholder="Hasil rekaman suara akan diproses dan muncul jadi teks di sini..."></textarea>
     </div>
 
     <!-- Fitur AI Assistant -->
     <div class="card">
-        <div class="section-title">✨ Fitur AI Assistant</div>
+        <div class="section-title">✨ Fitur AI Gemini</div>
         <div class="btn-grid">
             <button id="btnClean" class="btn btn-purple" disabled>🪄 Rapikan Teks</button>
             <button id="btnSummarize" class="btn btn-primary" disabled>📋 Rangkum AI</button>
@@ -196,7 +83,7 @@
     <!-- Hasil AI -->
     <div class="card">
         <div class="section-title">🤖 Hasil AI / Rangkuman</div>
-        <textarea id="aiResult" placeholder="Hasil pengolahan AI akan ditampilkan di sini..."></textarea>
+        <textarea id="aiResult" placeholder="Hasil olahan AI Gemini akan muncul di sini..."></textarea>
     </div>
 
     <!-- Riwayat Catatan -->
@@ -211,10 +98,10 @@
     </div>
 
     <script>
-        let recognition;
+        let mediaRecorder;
+        let audioChunks = [];
         let isRecording = false;
-        let accumulatedText = "";
-        let historyData = JSON.parse(localStorage.getItem('voice_notes_history_v2') || '[]');
+        let historyData = JSON.parse(localStorage.getItem('gemini_voice_notes') || '[]');
 
         const btnRecord = document.getElementById('btnRecord');
         const statusTitle = document.getElementById('statusTitle');
@@ -222,93 +109,113 @@
         const rawText = document.getElementById('rawText');
         const aiResult = document.getElementById('aiResult');
         const charCount = document.getElementById('charCount');
+        const geminiKey = document.getElementById('geminiKey');
         const btnClean = document.getElementById('btnClean');
         const btnSummarize = document.getElementById('btnSummarize');
         const btnSave = document.getElementById('btnSave');
         const historyList = document.getElementById('historyList');
 
+        if(localStorage.getItem('my_gemini_key')) {
+            geminiKey.value = localStorage.getItem('my_gemini_key');
+        }
+
+        geminiKey.addEventListener('change', () => {
+            localStorage.setItem('my_gemini_key', geminiKey.value.trim());
+        });
+
         renderHistory();
 
-        // Inisialisasi Pengenal Suara (Speech Recognition)
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-        if (SpeechRecognition) {
-            setupRecognition();
-        } else {
-            alert("Browser HP Anda tidak mendukung pengenal suara langsung. Harap gunakan Google Chrome!");
-        }
-
-        function setupRecognition() {
-            recognition = new SpeechRecognition();
-            recognition.continuous = true;
-            recognition.interimResults = true;
-            recognition.lang = 'id-ID';
-
-            recognition.onstart = () => {
-                isRecording = true;
-                btnRecord.classList.add('recording');
-                btnRecord.innerText = '⏹️';
-                statusTitle.innerText = "Sedang Merekam...";
-                statusDesc.innerText = "Silakan bicara, suara langsung dikonversi menjadi teks.";
-            };
-
-            recognition.onresult = (event) => {
-                let interimTranscript = '';
-                for (let i = event.resultIndex; i < event.results.length; i++) {
-                    const transcript = event.results[i][0].transcript;
-                    if (event.results[i].isFinal) {
-                        accumulatedText += transcript + ' ';
-                    } else {
-                        interimTranscript += transcript;
-                    }
-                }
-                rawText.value = (accumulatedText + interimTranscript).trim();
-                updateState();
-            };
-
-            recognition.onerror = (event) => {
-                console.log("Speech Recognition Error: ", event.error);
-                if (event.error !== 'no-speech') {
-                    statusDesc.innerText = "Peringatan: " + event.error;
-                }
-            };
-
-            recognition.onend = () => {
-                if (isRecording) {
-                    // Jika masih dalam status merekam, jalankan kembali agar tidak terputus di HP
-                    try { recognition.start(); } catch(e){}
-                } else {
-                    stopUI();
-                }
-            };
-        }
-
-        function stopUI() {
-            isRecording = false;
-            btnRecord.classList.remove('recording');
-            btnRecord.innerText = '🎙️';
-            statusTitle.innerText = "Selesai Merekam";
-            statusDesc.innerText = "Ketuk mikrofon lagi untuk menambah rekaman suara.";
-        }
-
-        // Tombol Merekam
-        btnRecord.addEventListener('click', () => {
-            if (!recognition) return;
+        // 1. Merekam Audio
+        btnRecord.addEventListener('click', async () => {
+            const key = geminiKey.value.trim();
+            if (!key) {
+                alert("Harap masukkan Kunci API Gemini Anda terlebih dahulu!");
+                return;
+            }
 
             if (!isRecording) {
-                accumulatedText = rawText.value ? rawText.value + ' ' : '';
                 try {
-                    recognition.start();
-                } catch(e) {
-                    setupRecognition();
-                    recognition.start();
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    let options = {};
+                    if (MediaRecorder.isTypeSupported('audio/webm')) {
+                        options = { mimeType: 'audio/webm' };
+                    } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+                        options = { mimeType: 'audio/mp4' };
+                    }
+
+                    mediaRecorder = new MediaRecorder(stream, options);
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = e => {
+                        if (e.data.size > 0) audioChunks.push(e.data);
+                    };
+
+                    mediaRecorder.onstop = async () => {
+                        const mimeType = mediaRecorder.mimeType || 'audio/webm';
+                        const audioBlob = new Blob(audioChunks, { type: mimeType });
+                        await convertAudioToText(audioBlob, mimeType);
+                    };
+
+                    mediaRecorder.start(200);
+                    isRecording = true;
+                    btnRecord.classList.add('recording');
+                    btnRecord.innerText = '⏹️';
+                    statusTitle.innerText = "Merekam Suara...";
+                    statusDesc.innerText = "Bicara dengan jelas. Tekan tombol merah jika selesai.";
+                } catch (err) {
+                    alert("Akses Mikrofon Gagal: " + err.message);
                 }
             } else {
                 isRecording = false;
-                recognition.stop();
-                stopUI();
+                mediaRecorder.stop();
+                btnRecord.classList.remove('recording');
+                btnRecord.innerText = '⏳';
+                statusTitle.innerText = "Memproses AI Gemini...";
+                statusDesc.innerText = "Mengubah suara rekaman menjadi teks...";
             }
         });
+
+        // 2. Kirim Audio ke AI Gemini (Audio-to-Text)
+        async function convertAudioToText(blob, mimeType) {
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = async () => {
+                const base64Audio = reader.result.split(',')[1];
+                const apiKey = geminiKey.value.trim();
+                const cleanMime = mimeType.split(';')[0];
+
+                try {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [
+                                    { text: "Dengarkan suara rekaman ini dan tuliskan seluruh percakapan/ucapan di dalamnya menjadi teks Bahasa Indonesia yang akurat dan jelas. Tuliskan teksnya saja." },
+                                    { inline_data: { mime_type: cleanMime, data: base64Audio } }
+                                ]
+                            }]
+                        })
+                    });
+
+                    const data = await response.json();
+                    if (data.error) throw new Error(data.error.message);
+
+                    const textResult = data.candidates[0].content.parts[0].text;
+                    rawText.value = textResult;
+                    updateState();
+
+                    btnRecord.innerText = '🎙️';
+                    statusTitle.innerText = "Berhasil!";
+                    statusDesc.innerText = "Suara berhasil diubah jadi teks!";
+                } catch (err) {
+                    alert("Gagal Konversi Suara: " + err.message);
+                    btnRecord.innerText = '🎙️';
+                    statusTitle.innerText = "Coba Lagi";
+                    statusDesc.innerText = "Terjadi kesalahan saat memproses audio.";
+                }
+            };
+        }
 
         function updateState() {
             const len = rawText.value.trim().length;
@@ -320,40 +227,44 @@
 
         rawText.addEventListener('input', updateState);
 
-        // Fitur AI 1: Merapikan Teks
-        btnClean.addEventListener('click', () => {
-            let text = rawText.value.trim();
-            if (!text) return;
-
-            // Hapus kata jeda (filler words)
-            text = text.replace(/\b(eee|eee|anu|mmm|umpamanya|apa namanye|apa ya)\b/gi, '');
-            text = text.replace(/\s+/g, ' ').trim();
-            // Perbaiki huruf kapital diawal kalimat
-            text = text.replace(/(^\w|\.\s+\w)/g, letter => letter.toUpperCase());
-
-            aiResult.value = "✨ [Teks Dirapikan AI]:\n\n" + text;
+        // 3. Rapikan Teks via AI
+        btnClean.addEventListener('click', async () => {
+            callGeminiAI("Perbaiki dan rapikan teks berikut. Hapus kata jeda seperti 'eee', 'anu', 'mmm', perbaiki tata bahasa dan tanda bacanya tanpa merubah inti pesan.");
         });
 
-        // Fitur AI 2: Merangkum Teks
-        btnSummarize.addEventListener('click', () => {
-            let text = rawText.value.trim();
-            if (!text) return;
+        // 4. Rangkum via AI
+        btnSummarize.addEventListener('click', async () => {
+            callGeminiAI("Buat rangkuman ringkas dan padat berupa poin-poin dari teks berikut.");
+        });
 
-            const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 0);
-            let summary = "📝 [Rangkuman Poin Utama AI]:\n\n";
+        async function callGeminiAI(promptInstruction) {
+            const text = rawText.value.trim();
+            const apiKey = geminiKey.value.trim();
+            if (!text || !apiKey) return;
 
-            if (sentences.length <= 2) {
-                summary += "• " + text;
-            } else {
-                summary += "• " + sentences[0] + ".\n";
-                summary += "• " + sentences[Math.floor(sentences.length / 2)] + ".\n";
-                summary += "• " + sentences[sentences.length - 1] + ".";
+            aiResult.value = "⏳ AI Gemini sedang berpikir...";
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{ text: promptInstruction + "\n\nTeks:\n" + text }]
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                if (data.error) throw new Error(data.error.message);
+
+                aiResult.value = data.candidates[0].content.parts[0].text;
+            } catch (err) {
+                aiResult.value = "Gagal memproses AI: " + err.message;
             }
+        }
 
-            aiResult.value = summary;
-        });
-
-        // Simpan ke Riwayat HP
+        // 5. Simpan Riwayat
         btnSave.addEventListener('click', () => {
             const item = {
                 id: Date.now(),
@@ -363,9 +274,9 @@
             };
 
             historyData.unshift(item);
-            localStorage.setItem('voice_notes_history_v2', JSON.stringify(historyData));
+            localStorage.setItem('gemini_voice_notes', JSON.stringify(historyData));
             renderHistory();
-            alert("Berhasil disimpan ke riwayat!");
+            alert("Tersimpan ke riwayat!");
         });
 
         function renderHistory() {
@@ -378,15 +289,15 @@
                 <div class="history-item">
                     <div class="history-date">📅 ${item.date}</div>
                     <div style="color:#cbd5e1;"><strong>Suara:</strong> ${item.raw}</div>
-                    ${item.ai ? `<div style="color:#a855f7; margin-top:4px;">${item.ai.replace(/\n/g, '<br>')}</div>` : ''}
+                    ${item.ai ? `<div style="color:#38bdf8; margin-top:4px;"><strong>AI:</strong> ${item.ai}</div>` : ''}
                 </div>
             `).join('');
         }
 
         function clearHistory() {
-            if (confirm("Hapus seluruh riwayat rekaman?")) {
+            if (confirm("Hapus seluruh riwayat?")) {
                 historyData = [];
-                localStorage.removeItem('voice_notes_history_v2');
+                localStorage.removeItem('gemini_voice_notes');
                 renderHistory();
             }
         }
