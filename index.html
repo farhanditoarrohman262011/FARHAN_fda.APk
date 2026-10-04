@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Voice Note Pro</title>
+    <title>VoiceAI Pro</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         body {
@@ -18,11 +18,10 @@
             padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
             min-height: 100vh;
         }
 
-        /* Header App */
         .app-header {
             display: flex;
             align-items: center;
@@ -32,7 +31,7 @@
         }
 
         .app-title {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #38bdf8;
             display: flex;
@@ -40,36 +39,34 @@
             gap: 8px;
         }
 
-        /* Card Container */
         .card {
-            background: rgba(30, 41, 59, 0.7);
+            background: rgba(30, 41, 59, 0.8);
             border: 1px solid #334155;
             border-radius: 16px;
             padding: 16px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
         }
 
-        /* Record Visualizer & Status */
         .record-section {
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            gap: 16px;
-            padding: 24px 12px;
+            gap: 14px;
+            padding: 20px 10px;
         }
 
         .mic-btn {
-            width: 80px;
-            height: 80px;
+            width: 76px;
+            height: 76px;
             border-radius: 50%;
             background: #0284c7;
             border: none;
             color: white;
-            font-size: 32px;
+            font-size: 30px;
             cursor: pointer;
             box-shadow: 0 0 20px rgba(2, 132, 199, 0.5);
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -78,7 +75,7 @@
         .mic-btn.recording {
             background: #ef4444;
             box-shadow: 0 0 25px rgba(239, 68, 68, 0.8);
-            animation: pulse 1.5s infinite;
+            animation: pulse 1.2s infinite;
         }
 
         @keyframes pulse {
@@ -87,12 +84,6 @@
             100% { transform: scale(1); }
         }
 
-        .status-text {
-            font-size: 0.9rem;
-            color: #94a3b8;
-        }
-
-        /* Action Buttons Grid */
         .btn-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -107,7 +98,7 @@
             font-weight: 600;
             font-size: 0.85rem;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -115,16 +106,14 @@
         }
 
         .btn:disabled {
-            opacity: 0.4;
+            opacity: 0.35;
             cursor: not-allowed;
         }
 
         .btn-primary { background: #38bdf8; color: #0f172a; }
         .btn-purple { background: #a855f7; color: white; }
         .btn-green { background: #22c55e; color: white; }
-        .btn-danger { background: #f43f5e; color: white; }
 
-        /* Text Area */
         .section-title {
             font-size: 0.9rem;
             font-weight: 600;
@@ -136,7 +125,7 @@
 
         textarea {
             width: 100%;
-            height: 140px;
+            height: 130px;
             background: #090d16;
             border: 1px solid #334155;
             border-radius: 12px;
@@ -151,13 +140,12 @@
             border-color: #38bdf8;
         }
 
-        /* History List */
         .history-item {
             background: #090d16;
             border: 1px solid #1e293b;
-            padding: 12px;
+            padding: 10px;
             border-radius: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-size: 0.85rem;
         }
 
@@ -166,16 +154,10 @@
             color: #38bdf8;
             margin-bottom: 4px;
         }
-
-        .history-text {
-            color: #cbd5e1;
-            white-space: pre-wrap;
-        }
     </style>
 </head>
 <body>
 
-    <!-- Header App -->
     <div class="app-header">
         <div class="app-title">
             <span>🎙️</span> VoiceAI Pro
@@ -187,21 +169,21 @@
     <div class="card record-section">
         <button id="btnRecord" class="mic-btn">🎙️</button>
         <div>
-            <h3 id="statusTitle" style="font-size: 1.1rem; font-weight: 600;">Ketuk Mikrofon</h3>
-            <p id="statusDesc" class="status-text">Mulailah berbicara untuk merekam suara menjadi teks</p>
+            <h3 id="statusTitle" style="font-size: 1.05rem; font-weight: 600;">Ketuk Mikrofon</h3>
+            <p id="statusDesc" style="font-size: 0.85rem; color: #94a3b8;">Bicara dan suara akan langsung diubah jadi teks di bawah.</p>
         </div>
     </div>
 
-    <!-- Teks Hasil Transkripsi -->
+    <!-- Hasil Transkripsi -->
     <div class="card">
         <div class="section-title">
             <span>📝 Transkripsi Suara</span>
             <span id="charCount" style="color: #64748b;">0 Karakter</span>
         </div>
-        <textarea id="rawText" placeholder="Suara Anda akan langsung berubah menjadi teks di sini..."></textarea>
+        <textarea id="rawText" placeholder="Suara Anda akan langsung muncul jadi teks di sini saat berbicara..."></textarea>
     </div>
 
-    <!-- AI Helper Tools -->
+    <!-- Fitur AI Assistant -->
     <div class="card">
         <div class="section-title">✨ Fitur AI Assistant</div>
         <div class="btn-grid">
@@ -211,10 +193,10 @@
         <button id="btnSave" class="btn btn-green" style="width: 100%; margin-top: 10px;" disabled>💾 Simpan ke Riwayat</button>
     </div>
 
-    <!-- Hasil Pengolahan AI -->
+    <!-- Hasil AI -->
     <div class="card">
         <div class="section-title">🤖 Hasil AI / Rangkuman</div>
-        <textarea id="aiResult" placeholder="Hasil teks yang dirapikan atau dirangkum akan muncul di sini..."></textarea>
+        <textarea id="aiResult" placeholder="Hasil pengolahan AI akan ditampilkan di sini..."></textarea>
     </div>
 
     <!-- Riwayat Catatan -->
@@ -223,17 +205,16 @@
             <span>📜 Riwayat Catatan</span>
             <span onclick="clearHistory()" style="color: #f43f5e; cursor: pointer; font-size: 0.8rem;">Hapus Semua</span>
         </div>
-        <div id="historyList" style="max-height: 200px; overflow-y: auto; margin-top: 8px;">
+        <div id="historyList" style="max-height: 180px; overflow-y: auto; margin-top: 8px;">
             <p style="text-align: center; color: #64748b; font-size: 0.85rem; padding: 10px;">Belum ada riwayat tersimpan.</p>
         </div>
     </div>
 
     <script>
-        // Cek Dukungan Browser untuk Perekaman Suara Gratis
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         let recognition;
         let isRecording = false;
-        let historyData = JSON.parse(localStorage.getItem('my_voice_history') || '[]');
+        let accumulatedText = "";
+        let historyData = JSON.parse(localStorage.getItem('voice_notes_history_v2') || '[]');
 
         const btnRecord = document.getElementById('btnRecord');
         const statusTitle = document.getElementById('statusTitle');
@@ -248,61 +229,89 @@
 
         renderHistory();
 
+        // Inisialisasi Pengenal Suara (Speech Recognition)
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
         if (SpeechRecognition) {
+            setupRecognition();
+        } else {
+            alert("Browser HP Anda tidak mendukung pengenal suara langsung. Harap gunakan Google Chrome!");
+        }
+
+        function setupRecognition() {
             recognition = new SpeechRecognition();
             recognition.continuous = true;
             recognition.interimResults = true;
-            recognition.lang = 'id-ID'; // Bahasa Indonesia
+            recognition.lang = 'id-ID';
+
+            recognition.onstart = () => {
+                isRecording = true;
+                btnRecord.classList.add('recording');
+                btnRecord.innerText = '⏹️';
+                statusTitle.innerText = "Sedang Merekam...";
+                statusDesc.innerText = "Silakan bicara, suara langsung dikonversi menjadi teks.";
+            };
 
             recognition.onresult = (event) => {
-                let currentTranscript = '';
+                let interimTranscript = '';
                 for (let i = event.resultIndex; i < event.results.length; i++) {
-                    currentTranscript += event.results[i][0].transcript;
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        accumulatedText += transcript + ' ';
+                    } else {
+                        interimTranscript += transcript;
+                    }
                 }
-                rawText.value = currentTranscript;
+                rawText.value = (accumulatedText + interimTranscript).trim();
                 updateState();
             };
 
             recognition.onerror = (event) => {
-                statusTitle.innerText = "Terjadi Kesalahan";
-                statusDesc.innerText = "Gagal merekam: " + event.error;
-                stopRecordingState();
+                console.log("Speech Recognition Error: ", event.error);
+                if (event.error !== 'no-speech') {
+                    statusDesc.innerText = "Peringatan: " + event.error;
+                }
             };
 
             recognition.onend = () => {
-                if (isRecording) recognition.start(); // Auto start jika masih mode merekam
+                if (isRecording) {
+                    // Jika masih dalam status merekam, jalankan kembali agar tidak terputus di HP
+                    try { recognition.start(); } catch(e){}
+                } else {
+                    stopUI();
+                }
             };
-        } else {
-            alert("Browser Anda tidak mendukung pengenal suara langsung. Gunakan Google Chrome versi terbaru.");
         }
 
-        // Toggle Merekam
+        function stopUI() {
+            isRecording = false;
+            btnRecord.classList.remove('recording');
+            btnRecord.innerText = '🎙️';
+            statusTitle.innerText = "Selesai Merekam";
+            statusDesc.innerText = "Ketuk mikrofon lagi untuk menambah rekaman suara.";
+        }
+
+        // Tombol Merekam
         btnRecord.addEventListener('click', () => {
             if (!recognition) return;
 
             if (!isRecording) {
-                recognition.start();
-                isRecording = true;
-                btnRecord.classList.add('recording');
-                btnRecord.innerText = '⏹️';
-                statusTitle.innerText = "Merekam Suara...";
-                statusDesc.innerText = "Bicaralah dengan jelas. Ketuk tombol untuk berhenti.";
+                accumulatedText = rawText.value ? rawText.value + ' ' : '';
+                try {
+                    recognition.start();
+                } catch(e) {
+                    setupRecognition();
+                    recognition.start();
+                }
             } else {
-                stopRecordingState();
+                isRecording = false;
+                recognition.stop();
+                stopUI();
             }
         });
 
-        function stopRecordingState() {
-            isRecording = false;
-            recognition.stop();
-            btnRecord.classList.remove('recording');
-            btnRecord.innerText = '🎙️';
-            statusTitle.innerText = "Selesai Merekam";
-            statusDesc.innerText = "Suara berhasil dikonversi ke teks!";
-        }
-
         function updateState() {
-            const len = rawText.value.length;
+            const len = rawText.value.trim().length;
             charCount.innerText = `${len} Karakter`;
             btnClean.disabled = len === 0;
             btnSummarize.disabled = len === 0;
@@ -311,37 +320,40 @@
 
         rawText.addEventListener('input', updateState);
 
-        // AI Fitur: Merapikan Teks (Klien-side Engine)
+        // Fitur AI 1: Merapikan Teks
         btnClean.addEventListener('click', () => {
-            let text = rawText.value;
-            // Menghapus kata jeda umum (filler words)
-            text = text.replace(/\b(eee|eee|anu|mmm|umpamanya|apanya)\b/gi, '');
-            // Merapikan spasi berlebih
+            let text = rawText.value.trim();
+            if (!text) return;
+
+            // Hapus kata jeda (filler words)
+            text = text.replace(/\b(eee|eee|anu|mmm|umpamanya|apa namanye|apa ya)\b/gi, '');
             text = text.replace(/\s+/g, ' ').trim();
-            // Kapital huruf pertama kalimat
+            // Perbaiki huruf kapital diawal kalimat
             text = text.replace(/(^\w|\.\s+\w)/g, letter => letter.toUpperCase());
-            
-            aiResult.value = "[Hasil AI - Teks Dirapikan]:\n" + text;
+
+            aiResult.value = "✨ [Teks Dirapikan AI]:\n\n" + text;
         });
 
-        // AI Fitur: Merangkum Teks
+        // Fitur AI 2: Merangkum Teks
         btnSummarize.addEventListener('click', () => {
-            const text = rawText.value.trim();
-            const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
-            
-            let summary = "[Hasil AI - Rangkuman Poin Utama]:\n";
+            let text = rawText.value.trim();
+            if (!text) return;
+
+            const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 0);
+            let summary = "📝 [Rangkuman Poin Utama AI]:\n\n";
+
             if (sentences.length <= 2) {
                 summary += "• " + text;
             } else {
-                // Mengambil kalimat awal dan akhir sebagai rangkuman inti
-                summary += "• " + sentences[0].trim() + ".\n";
-                summary += "• " + sentences[Math.floor(sentences.length / 2)].trim() + ".\n";
-                summary += "• " + sentences[sentences.length - 1].trim() + ".";
+                summary += "• " + sentences[0] + ".\n";
+                summary += "• " + sentences[Math.floor(sentences.length / 2)] + ".\n";
+                summary += "• " + sentences[sentences.length - 1] + ".";
             }
+
             aiResult.value = summary;
         });
 
-        // Simpan ke Riwayat HP (Local Storage)
+        // Simpan ke Riwayat HP
         btnSave.addEventListener('click', () => {
             const item = {
                 id: Date.now(),
@@ -351,9 +363,9 @@
             };
 
             historyData.unshift(item);
-            localStorage.setItem('my_voice_history', JSON.stringify(historyData));
+            localStorage.setItem('voice_notes_history_v2', JSON.stringify(historyData));
             renderHistory();
-            alert("Catatan berhasil disimpan ke riwayat!");
+            alert("Berhasil disimpan ke riwayat!");
         });
 
         function renderHistory() {
@@ -365,16 +377,16 @@
             historyList.innerHTML = historyData.map(item => `
                 <div class="history-item">
                     <div class="history-date">📅 ${item.date}</div>
-                    <div class="history-text"><strong>Suara:</strong> ${item.raw}</div>
-                    ${item.ai ? `<div class="history-text" style="color:#a855f7; margin-top:4px;"><strong>AI:</strong> ${item.ai}</div>` : ''}
+                    <div style="color:#cbd5e1;"><strong>Suara:</strong> ${item.raw}</div>
+                    ${item.ai ? `<div style="color:#a855f7; margin-top:4px;">${item.ai.replace(/\n/g, '<br>')}</div>` : ''}
                 </div>
             `).join('');
         }
 
         function clearHistory() {
-            if (confirm("Apakah Anda yakin ingin menghapus seluruh riwayat?")) {
+            if (confirm("Hapus seluruh riwayat rekaman?")) {
                 historyData = [];
-                localStorage.removeItem('my_voice_history');
+                localStorage.removeItem('voice_notes_history_v2');
                 renderHistory();
             }
         }
